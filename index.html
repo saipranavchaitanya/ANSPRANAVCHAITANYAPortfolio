@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANS Pranav Chaitanya — Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06080d;
+    --bg2: #0d1117;
+    --bg3: #131820;
+    --accent: #7c6aff;
+    --accent2: #ff6b9d;
+    --accent3: #3df0c2;
+    --text: #dde2ef;
+    --muted: #5a6378;
+    --border: rgba(255,255,255,0.06);
+    --card: rgba(255,255,255,0.025);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Dot grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(rgba(124,106,255,0.12) 1px, transparent 1px);
+    background-size: 36px 36px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow blobs */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(124,106,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 6%;
+    background: rgba(6,8,13,0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 6% 5rem;
+    gap: 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-left { }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(124,106,255,0.1);
+    border: 1px solid rgba(124,106,255,0.25);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.75rem;
+    opacity: 0;
+    animation: fadeUp 0.5s 0.2s forwards;
+  }
+
+  .badge-dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.35s forwards;
+  }
+
+  h1 .name-first { display: block; color: var(--text); }
+  h1 .name-last { display: block; color: var(--accent); }
+  h1 .name-role {
+    display: block;
+    font-size: 0.45em;
+    font-weight: 400;
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-top: 0.5rem;
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.5s forwards;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.65s forwards;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.6rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .btn-primary:hover {
+    background: #9a8cff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(124,106,255,0.35);
+  }
+
+  .btn-download {
+    background: rgba(61,240,194,0.08);
+    border: 1px solid rgba(61,240,194,0.25);
+    color: var(--accent3);
+  }
+
+  .btn-download:hover {
+    background: rgba(61,240,194,0.15);
+    border-color: var(--accent3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(61,240,194,0.15);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* Hero right: animated stats card */
+  .hero-right {
+    opacity: 0;
+    animation: fadeIn 0.8s 0.9s forwards;
+  }
+
+  .hero-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+  }
+
+  .card-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .card-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .card-stat { }
+
+  .card-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+
+  .card-stat-num.purple { color: var(--accent); }
+  .card-stat-num.pink { color: var(--accent2); }
+  .card-stat-num.teal { color: var(--accent3); }
+  .card-stat-num.white { color: var(--text); }
+
+  .card-stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .card-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-tool {
+    background: rgba(124,106,255,0.08);
+    border: 1px solid rgba(124,106,255,0.2);
+    border-radius: 4px;
+    padding: 0.25rem 0.65rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+  }
+
+  /* SECTION COMMONS */
+  section {
+    padding: 5.5rem 6%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .section-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 6%;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    margin-bottom: 1.1rem;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .about-text p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .about-contact-info {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .contact-info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .contact-info-item span:first-child { color: var(--accent); }
+
+  .about-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .highlight-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .highlight-card:hover {
+    border-color: rgba(124,106,255,0.3);
+    transform: translateX(4px);
+  }
+
+  .hl-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+
+  .hl-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* SKILLS */
+  #skills { background: var(--bg2); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .skill-cat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .skill-cat:hover {
+    border-color: rgba(124,106,255,0.25);
+    transform: translateY(-3px);
+  }
+
+  .skill-cat-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .skill-icon {
+    width: 32px; height: 32px;
+    background: rgba(124,106,255,0.12);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+
+  .skill-cat-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+  .skill-tag {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.25rem 0.65rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text);
+    transition: all 0.15s;
+  }
+
+  .skill-tag:hover {
+    background: rgba(124,106,255,0.12);
+    border-color: rgba(124,106,255,0.3);
+    color: var(--accent);
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.25s;
+  }
+
+  .project-card:hover {
+    border-color: rgba(124,106,255,0.3);
+    transform: translateY(-5px);
+  }
+
+  .project-glow {
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,106,255,0.12), transparent 70%);
+    pointer-events: none;
+  }
+
+  .project-card:nth-child(2) .project-glow { background: radial-gradient(circle, rgba(255,107,157,0.12), transparent 70%); }
+  .project-card:nth-child(3) .project-glow { background: radial-gradient(circle, rgba(61,240,194,0.12), transparent 70%); }
+
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .project-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+  }
+
+  .project-period {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  .project-desc {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    flex: 1;
+  }
+
+  .project-highlights {
+    list-style: none;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .project-highlights li {
+    font-size: 0.84rem;
+    color: var(--muted);
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .project-highlights li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.75rem;
+  }
+
+  .project-tools { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+  .project-tool {
+    border-radius: 4px;
+    padding: 0.2rem 0.6rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+  }
+
+  .tool-purple { background: rgba(124,106,255,0.1); border: 1px solid rgba(124,106,255,0.25); color: var(--accent); }
+  .tool-pink   { background: rgba(255,107,157,0.1); border: 1px solid rgba(255,107,157,0.25); color: var(--accent2); }
+  .tool-teal   { background: rgba(61,240,194,0.1);  border: 1px solid rgba(61,240,194,0.25);  color: var(--accent3); }
+
+  /* EXPERIENCE */
+  #experience { background: var(--bg2); }
+
+  .exp-list { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .exp-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    align-items: start;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .exp-card:hover {
+    border-color: rgba(124,106,255,0.25);
+    transform: translateX(4px);
+  }
+
+  .exp-meta { }
+
+  .exp-company {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--text);
+  }
+
+  .exp-period {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+  }
+
+  .exp-location {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+
+  .exp-role {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+
+  .exp-bullets li {
+    font-size: 0.9rem;
+    color: var(--muted);
+    padding-left: 1.2rem;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .exp-bullets li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.7rem;
+    top: 0.25rem;
+  }
+
+  /* EDUCATION */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .edu-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .edu-card:hover {
+    border-color: rgba(124,106,255,0.25);
+    transform: translateY(-3px);
+  }
+
+  .edu-card-accent {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at bottom right, rgba(124,106,255,0.08), transparent 70%);
+  }
+
+  .edu-level {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .edu-degree {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.35rem;
+    line-height: 1.3;
+  }
+
+  .edu-school {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .edu-period {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* CONTACT */
+  #contact { text-align: center; }
+
+  .contact-inner { max-width: 560px; margin: 0 auto; }
+
+  .contact-inner p {
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .contact-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-bottom: 3rem;
+  }
+
+  .contact-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.4rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.76rem;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+
+  .contact-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+    background: rgba(124,106,255,0.06);
+  }
+
+  .contact-btn-icon { font-size: 1rem; }
+
+  footer {
+    text-align: center;
+    padding: 1.75rem 6%;
+    border-top: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 900px) {
+    #hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .exp-card { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">ANS <span>Pranav</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-badge"><span class="badge-dot"></span> Open to Opportunities</div>
+    <h1>
+      <span class="name-first">ANS Pranav</span>
+      <span class="name-last">Chaitanya</span>
+      <span class="name-role">// Data Analyst · Business Analytics</span>
+    </h1>
+    <p class="hero-desc">
+      Undergraduate data analyst passionate about transforming raw datasets into clear, actionable business insights — through EDA, KPI reporting, dashboards, and storytelling.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-secondary">Contact Me</a>
+      <a href="./resume.pdf" download class="btn btn-download">⬇ Download Resume</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="card-title">// Quick Stats</div>
+      <div class="card-stats">
+        <div class="card-stat">
+          <div class="card-stat-num purple">3+</div>
+          <div class="card-stat-label">Projects Built</div>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-num pink">2</div>
+          <div class="card-stat-label">Internships</div>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-num teal">5+</div>
+          <div class="card-stat-label">Tools Mastered</div>
+        </div>
+        <div class="card-stat">
+          <div class="card-stat-num white">2027</div>
+          <div class="card-stat-label">Graduating</div>
+        </div>
+      </div>
+      <div class="card-tools">
+        <span class="card-tool">Python</span>
+        <span class="card-tool">SQL</span>
+        <span class="card-tool">Power BI</span>
+        <span class="card-tool">Tableau</span>
+        <span class="card-tool">Excel</span>
+        <span class="card-tool">Pandas</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">01 · About Me</div>
+    <h2>Who I Am</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm <strong>ANS Pranav Chaitanya</strong>, a Computer Science undergraduate at Madanapalli Institute of Technology and Sciences (graduating 2027), specializing in <strong>Data Analytics and Business Intelligence</strong>.</p>
+      <p>With hands-on experience through internships at <strong>Deloitte (via Forage)</strong> and <strong>Edu Tantr</strong>, I've built dashboards, performed forensic data analysis, and extracted business insights from complex datasets — all while developing a deep appreciation for data quality and storytelling.</p>
+      <p>I'm proficient in <strong>Python, SQL, Power BI, and Tableau</strong>, and I enjoy every step of the analytics workflow — from messy raw data to polished, stakeholder-ready reports.</p>
+      <div class="about-contact-info">
+        <div class="contact-info-item"><span>📍</span> Madanapalli, Andhra Pradesh, India</div>
+        <div class="contact-info-item"><span>📧</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e2838c919290838c8394818a838b96838c9b83a2858f838b8ecc818d8f">[email&#160;protected]</a></div>
+        <div class="contact-info-item"><span>📞</span> +91 9182091181</div>
+      </div>
+    </div>
+    <div class="about-highlights reveal">
+      <div class="highlight-card">
+        <div class="hl-num">2</div>
+        <div class="hl-label">Industry Internships</div>
+      </div>
+      <div class="highlight-card">
+        <div class="hl-num">3+</div>
+        <div class="hl-label">Analytics Projects</div>
+      </div>
+      <div class="highlight-card">
+        <div class="hl-num">40%</div>
+        <div class="hl-label">Reporting Time Saved (Blinkit)</div>
+      </div>
+      <div class="highlight-card">
+        <div class="hl-num">500k+</div>
+        <div class="hl-label">Data Points Analyzed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">02 · Skills</div>
+    <h2>Technical Toolkit</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-cat reveal">
+      <div class="skill-cat-head">
+        <div class="skill-icon">🐍</div>
+        <div class="skill-cat-name">Programming & Querying</div>
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Pandas</span>
+        <span class="skill-tag">NumPy</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">CTEs</span>
+        <span class="skill-tag">Joins</span>
+        <span class="skill-tag">Aggregations</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-head">
+        <div class="skill-icon">📊</div>
+        <div class="skill-cat-name">BI & Visualization</div>
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag">Power BI</span>
+        <span class="skill-tag">DAX</span>
+        <span class="skill-tag">Data Modeling</span>
+        <span class="skill-tag">Tableau</span>
+        <span class="skill-tag">Matplotlib</span>
+        <span class="skill-tag">Excel</span>
+        <span class="skill-tag">Pivot Tables</span>
+        <span class="skill-tag">XLOOKUP</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-head">
+        <div class="skill-icon">🔍</div>
+        <div class="skill-cat-name">Analytics</div>
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag">EDA</span>
+        <span class="skill-tag">KPI Reporting</span>
+        <span class="skill-tag">Trend Analysis</span>
+        <span class="skill-tag">Forensic Analysis</span>
+        <span class="skill-tag">Ad-hoc Analysis</span>
+        <span class="skill-tag">Business Reporting</span>
+      </div>
+    </div>
+    <div class="skill-cat reveal">
+      <div class="skill-cat-head">
+        <div class="skill-icon">🛠️</div>
+        <div class="skill-cat-name">Tools & Practices</div>
+      </div>
+      <div class="skill-tags">
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">GitHub</span>
+        <span class="skill-tag">Jupyter Notebook</span>
+        <span class="skill-tag">Google Colab</span>
+        <span class="skill-tag">VS Code</span>
+        <span class="skill-tag">Data Cleaning</span>
+        <span class="skill-tag">Validation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">03 · Projects</div>
+    <h2>Featured Work</h2>
+  </div>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-glow"></div>
+      <div class="project-header">
+        <div class="project-num">PROJECT / 01</div>
+        <div class="project-period">Dec 2025 – Present</div>
+      </div>
+      <div class="project-title">Blinkit Sales Analytics Dashboard</div>
+      <ul class="project-highlights">
+        <li>Designed a Power BI dashboard tracking revenue, orders, and customer engagement KPIs</li>
+        <li>Built data models and DAX measures to monitor performance across categories & time periods</li>
+        <li>Reduced manual reporting by ~40% by automating KPI tracking and visual analysis</li>
+      </ul>
+      <div class="project-tools">
+        <span class="project-tool tool-purple">Python</span>
+        <span class="project-tool tool-purple">Power BI</span>
+        <span class="project-tool tool-purple">DAX</span>
+        <span class="project-tool tool-purple">Git</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-glow"></div>
+      <div class="project-header">
+        <div class="project-num">PROJECT / 02</div>
+        <div class="project-period">Nov – Dec 2025</div>
+      </div>
+      <div class="project-title">IPL Performance & Trend Analysis</div>
+      <ul class="project-highlights">
+        <li>Analyzed IPL match datasets to evaluate team performance, venue impact & seasonal trends</li>
+        <li>Cleaned and processed large datasets using Python (Pandas) for accuracy</li>
+        <li>Built interactive Power BI dashboards with DAX and KPI frameworks for comparative analysis</li>
+      </ul>
+      <div class="project-tools">
+        <span class="project-tool tool-pink">Python</span>
+        <span class="project-tool tool-pink">SQL</span>
+        <span class="project-tool tool-pink">Power BI</span>
+        <span class="project-tool tool-pink">Git</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-glow"></div>
+      <div class="project-header">
+        <div class="project-num">PROJECT / 03</div>
+        <div class="project-period">Sep – Oct 2025</div>
+      </div>
+      <div class="project-title">Uber Rides Data Analysis</div>
+      <ul class="project-highlights">
+        <li>Analyzed Uber ride datasets to identify peak booking hours and ride purposes</li>
+        <li>Performed EDA to understand user behavior, demand trends, and ride frequency</li>
+        <li>Deployed interactive Power BI dashboards with data modeling and KPI frameworks</li>
+      </ul>
+      <div class="project-tools">
+        <span class="project-tool tool-teal">Python</span>
+        <span class="project-tool tool-teal">Matplotlib</span>
+        <span class="project-tool tool-teal">Power BI</span>
+        <span class="project-tool tool-teal">DAX</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">04 · Experience</div>
+    <h2>Work History</h2>
+  </div>
+  <div class="exp-list">
+
+    <div class="exp-card reveal">
+      <div class="exp-meta">
+        <div class="exp-company">Deloitte</div>
+        <div class="exp-period">Apr 2025 – Oct 2025</div>
+        <div class="exp-location">Remote (Forage Simulation)</div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-role">Data Analytics Job Simulation · Virtual Internship</div>
+        <ul class="exp-bullets">
+          <li>Completed a real-world data analytics simulation focused on business problem-solving and risk analysis</li>
+          <li>Performed forensic data analysis to identify anomalies and risk indicators in structured datasets</li>
+          <li>Built an interactive Tableau dashboard to visualize insights and support executive decision-making</li>
+          <li>Cleaned and analyzed datasets using Excel, improving data accuracy and insight clarity</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-meta">
+        <div class="exp-company">Edu Tantr</div>
+        <div class="exp-period">Jun 2025 – Sep 2025</div>
+        <div class="exp-location">Bangalore</div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-role">Data Science Intern</div>
+        <ul class="exp-bullets">
+          <li>Conducted end-to-end data analysis using Python (Pandas), SQL (MySQL), and Excel on business datasets</li>
+          <li>Analyzed revenue trends, regional performance, and product profitability to support data-driven decisions</li>
+          <li>Developed a Power BI dashboard with KPIs, slicers, and drill-downs for category, region & product analysis</li>
+          <li>Identified top-performing products and high-revenue regions, improving stakeholder reporting efficiency</li>
+          <li>Published dashboards, SQL queries, and Python notebooks on GitHub for documentation and reuse</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">05 · Education</div>
+    <h2>Academic Background</h2>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div class="edu-card-accent"></div>
+      <div class="edu-level">Undergraduate · Current</div>
+      <div class="edu-degree">B.Tech in Computer Science</div>
+      <div class="edu-school">Madanapalli Institute of Technology and Sciences</div>
+      <div class="edu-period">Aug 2023 – May 2027 · Madanapalli, AP</div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-card-accent"></div>
+      <div class="edu-level">Class XII · State Board</div>
+      <div class="edu-degree">Senior Secondary Education</div>
+      <div class="edu-school">Sri Chaitanya Jr College</div>
+      <div class="edu-period">Sep 2021 – Mar 2023 · Madanapalli, AP</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header reveal" style="text-align:center; align-items:center; display:flex; flex-direction:column;">
+    <div class="section-eyebrow">06 · Contact</div>
+    <h2>Let's Connect</h2>
+  </div>
+  <div class="contact-inner reveal">
+    <p>I'm actively seeking data analyst opportunities and internships. Whether you have a project, a role, or just want to talk data — feel free to reach out!</p>
+    <div class="contact-grid">
+      <a href="/cdn-cgi/l/email-protection#d2b3bca1a2a0b3bcb3a4b1bab3bba6b3bcabb392b5bfb3bbbefcb1bdbf" class="contact-btn">
+        <span class="contact-btn-icon">✉</span> Email Me
+      </a>
+      <a href="https://linkedin.com/in/anspranavchaitanya" target="_blank" class="contact-btn">
+        <span class="contact-btn-icon">in</span> LinkedIn
+      </a>
+      <a href="https://github.com/pranavchaitanya" target="_blank" class="contact-btn">
+        <span class="contact-btn-icon">⌥</span> GitHub
+      </a>
+    </div>
+    <a href="#hero" class="btn btn-secondary">↑ Back to Top</a>
+  </div>
+</section>
+
+<footer>
+  © 2025 ANS Pranav Chaitanya · Data Analyst Portfolio
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries    .forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 70);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
